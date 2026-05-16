@@ -1,0 +1,6 @@
+{
+  "name": "계기교육 소감문 수집 비서",
+  "description": "중학교 학생들이 소감문을 작성하면 AI가 내용을 분석하고 정리하여 선생님의 행정 업무를 도와주는 서비스입니다.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}

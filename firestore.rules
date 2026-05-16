@@ -1,0 +1,41 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      // For this app, we'll consider the specific user email as admin
+      return isSignedIn() && (
+        request.auth.token.email == 'hyejin0421@inha.edu' && 
+        request.auth.token.email_verified == true
+      );
+    }
+
+    function isValidReflection(data) {
+      return data.keys().hasAll(['studentId', 'name', 'reflection', 'timestamp', 'createdAt']) &&
+             data.keys().size() == 5 &&
+             data.studentId is string && data.studentId.size() <= 20 &&
+             data.name is string && data.name.size() <= 50 &&
+             data.reflection is string && data.reflection.size() <= 2000 &&
+             data.timestamp is string;
+    }
+
+    match /reflections/{reflectionId} {
+      // Allow anyone to create a reflection (anonymous or signed in)
+      // Actually, let's just allow write for now since we don't have mandatory auth for students
+      allow create: if isValidReflection(request.resource.data);
+      
+      // Only admins can read the collection
+      allow list: if isAdmin();
+      allow get: if isAdmin();
+    }
+  }
+}

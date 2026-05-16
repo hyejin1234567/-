@@ -1,0 +1,39 @@
+{
+  "entities": {
+    "Reflection": {
+      "title": "Reflection",
+      "description": "A student's reflection on commemorative education.",
+      "type": "object",
+      "properties": {
+        "studentId": {
+          "type": "string",
+          "description": "The student's ID (e.g., 10324)"
+        },
+        "name": {
+          "type": "string",
+          "description": "The student's name"
+        },
+        "reflection": {
+          "type": "string",
+          "description": "The content of the reflection"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp of the reflection"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Server-side timestamp"
+        }
+      },
+      "required": ["studentId", "name", "reflection", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/reflections/{reflectionId}": {
+      "schema": "Reflection",
+      "description": "Collection of student reflections"
+    }
+  }
+}
